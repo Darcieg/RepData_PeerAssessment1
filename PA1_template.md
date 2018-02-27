@@ -5,23 +5,24 @@ output:
     keep_md: true
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 ## Loading and preprocessing the data
 ##### Note: this assumes that "activity.csv" is in the same directory that this code is being run in.
-```{r Load and Preprocess data, echo = TRUE}
+
+```r
 QuantifiedSelf<-read.csv("activity.csv")
 QuantifiedSelf$date <- as.Date(QuantifiedSelf$date)
 ```
 
-```{r hist total steps per day, echo = TRUE}
 
+```r
 steps_per_day<-tapply(QuantifiedSelf$steps, QuantifiedSelf$date, sum, na.rm = TRUE)
 
 hist(as.numeric(as.character(steps_per_day)), col = "purple", breaks=50, main="Total Steps Per Day", xlab = "Steps")
 ```
+
+![](PA1_template_files/figure-html/hist total steps per day-1.png)<!-- -->
 
 ## What is mean total number of steps taken per day?
 
@@ -29,20 +30,30 @@ hist(as.numeric(as.character(steps_per_day)), col = "purple", breaks=50, main="T
 ##### Note to reviewers: I interpreted "ignore" as "remove," since the mean would be na otherwise.
 #### Mean total steps per day
 
-```{r Calculate mean steps per day, echo = TRUE}
 
+```r
 mean(steps_per_day)
 ```
+
+```
+## [1] 9354.23
+```
 #### Median total steps per day
-```{r Median steps per day, echo = TRUE}
+
+```r
 median(steps_per_day)
+```
+
+```
+## [1] 10395
 ```
 
 ## What is the average daily activity pattern?
 ##### Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps 
 ##### taken, averaged across all days (y-axis).
   
-```{r time series graph, echo = TRUE}
+
+```r
 mean_steps_per_interval<-tapply(QuantifiedSelf$steps, QuantifiedSelf$interval, mean, na.rm=TRUE)
 
 plot(mean_steps_per_interval, 
@@ -51,10 +62,17 @@ plot(mean_steps_per_interval,
      ylab="Avg number of steps taken")
 ```
 
+![](PA1_template_files/figure-html/time series graph-1.png)<!-- -->
+
 ##### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r maxinterval, echo = TRUE}
+
+```r
 which.max(as.vector(mean_steps_per_interval))
+```
+
+```
+## [1] 104
 ```
 
 ## Imputing missing values
@@ -63,8 +81,13 @@ which.max(as.vector(mean_steps_per_interval))
 
 ##### Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs).
 
-```{r missing value count, echo = TRUE}
+
+```r
 sum(is.na(QuantifiedSelf$steps))
+```
+
+```
+## [1] 2304
 ```
 
 ##### Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be 
@@ -72,7 +95,8 @@ sum(is.na(QuantifiedSelf$steps))
 ##### Create a new dataset that is equal to the original dataset but with the missing data filled in.
 ##### I used the calculated mean-per-interval (missing values removed first) as a substitute for #steps where value is na.
 
-```{r impute missing values, echo = TRUE}
+
+```r
 QuantifiedSelfNoMissing<-subset(QuantifiedSelf, !is.na(QuantifiedSelf$steps))
 mean_steps_per_interval_no_missing <- tapply(QuantifiedSelfNoMissing$steps, QuantifiedSelfNoMissing$interval, mean, simplify=T)
 mean_steps_per_interval_no_missing<-as.data.frame(mean_steps_per_interval_no_missing)
@@ -88,7 +112,8 @@ for(i in 1:nrow(QuantifiedSelfImputed))
   }
 ```
 ##### Make a histogram of the total number of steps taken each day.
-```{r histogram imputed, echo = TRUE}
+
+```r
 steps_per_day_imputed<-tapply(QuantifiedSelfImputed$steps, QuantifiedSelfImputed$date, sum)
 hist(as.numeric(as.character(steps_per_day_imputed)), 
      col = "purple", 
@@ -97,14 +122,26 @@ hist(as.numeric(as.character(steps_per_day_imputed)),
      xlab = "Steps")
 ```
 
+![](PA1_template_files/figure-html/histogram imputed-1.png)<!-- -->
+
 ##### Report the mean and median total number of steps taken per day. 
 #### Mean total steps per day with imputed values
-```{r mean imputed, echo = TRUE}
+
+```r
 mean(steps_per_day_imputed)
 ```
+
+```
+## [1] 10766.19
+```
 #### Median total steps per day with imputed values
-```{r median imputed, echo=TRUE}
+
+```r
 median(steps_per_day_imputed)
+```
+
+```
+## [1] 10766.19
 ```
 
 ##### Do these values differ from the estimates from the first part of the assignment? 
@@ -119,7 +156,8 @@ median(steps_per_day_imputed)
 ##### Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating 
 ##### whether a given date is a weekday or weekend day.
 
-```{r add weekend/weekday factor to dataset, echo = TRUE}
+
+```r
 weekdaysVector<-c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 logicalVec<-weekdays(QuantifiedSelfImputed$date) %in% weekdaysVector
 weekdaysFactor<-factor(logicalVec, levels=c(FALSE, TRUE), labels = c("Weekend", "Weekday"))
@@ -133,11 +171,14 @@ colnames(mean_steps_per_interval_by_weekPart)<-c("Interval", "WeekPart", "MeanSt
 ##### See the README file in the GitHub repository to see an example of what this plot should look like 
 ##### using simulated data.
 
-```{r plot weekday weekend, echo = TRUE}
+
+```r
 library(ggplot2)
 p<-ggplot(mean_steps_per_interval_by_weekPart, aes(Interval, MeanSteps)) + geom_line()
 p + facet_grid(WeekPart ~ .)
 ```
+
+![](PA1_template_files/figure-html/plot weekday weekend-1.png)<!-- -->
 
 
 

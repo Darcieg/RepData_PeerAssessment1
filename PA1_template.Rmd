@@ -16,7 +16,7 @@ QuantifiedSelf<-read.csv("activity.csv")
 QuantifiedSelf$date <- as.Date(QuantifiedSelf$date)
 ```
 
-```{r hist total steps per day, echo = TRUE}
+```{r hist_total_steps_per_day, echo = TRUE}
 
 steps_per_day<-tapply(QuantifiedSelf$steps, QuantifiedSelf$date, sum, na.rm = TRUE)
 
@@ -42,7 +42,7 @@ median(steps_per_day)
 ##### Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps 
 ##### taken, averaged across all days (y-axis).
   
-```{r time series graph, echo = TRUE}
+```{r time_series_graph, echo = TRUE}
 mean_steps_per_interval<-tapply(QuantifiedSelf$steps, QuantifiedSelf$interval, mean, na.rm=TRUE)
 
 plot(mean_steps_per_interval, 
@@ -88,7 +88,7 @@ for(i in 1:nrow(QuantifiedSelfImputed))
   }
 ```
 ##### Make a histogram of the total number of steps taken each day.
-```{r histogram imputed, echo = TRUE}
+```{r histogram_imputed, echo = TRUE}
 steps_per_day_imputed<-tapply(QuantifiedSelfImputed$steps, QuantifiedSelfImputed$date, sum)
 hist(as.numeric(as.character(steps_per_day_imputed)), 
      col = "purple", 
@@ -133,7 +133,7 @@ colnames(mean_steps_per_interval_by_weekPart)<-c("Interval", "WeekPart", "MeanSt
 ##### See the README file in the GitHub repository to see an example of what this plot should look like 
 ##### using simulated data.
 
-```{r plot weekday weekend, echo = TRUE}
+```{r plot_weekday_weekend, echo = TRUE}
 library(ggplot2)
 p<-ggplot(mean_steps_per_interval_by_weekPart, aes(Interval, MeanSteps)) + geom_line()
 p + facet_grid(WeekPart ~ .)

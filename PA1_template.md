@@ -22,7 +22,7 @@ steps_per_day<-tapply(QuantifiedSelf$steps, QuantifiedSelf$date, sum, na.rm = TR
 hist(as.numeric(as.character(steps_per_day)), col = "purple", breaks=50, main="Total Steps Per Day", xlab = "Steps")
 ```
 
-![](PA1_template_files/figure-html/hist total steps per day-1.png)<!-- -->
+![](PA1_template_files/figure-html/hist_total_steps_per_day-1.png)<!-- -->
 
 ## What is mean total number of steps taken per day?
 
@@ -62,7 +62,7 @@ plot(mean_steps_per_interval,
      ylab="Avg number of steps taken")
 ```
 
-![](PA1_template_files/figure-html/time series graph-1.png)<!-- -->
+![](PA1_template_files/figure-html/time_series_graph-1.png)<!-- -->
 
 ##### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -122,7 +122,7 @@ hist(as.numeric(as.character(steps_per_day_imputed)),
      xlab = "Steps")
 ```
 
-![](PA1_template_files/figure-html/histogram imputed-1.png)<!-- -->
+![](PA1_template_files/figure-html/histogram_imputed-1.png)<!-- -->
 
 ##### Report the mean and median total number of steps taken per day. 
 #### Mean total steps per day with imputed values
@@ -178,7 +178,7 @@ p<-ggplot(mean_steps_per_interval_by_weekPart, aes(Interval, MeanSteps)) + geom_
 p + facet_grid(WeekPart ~ .)
 ```
 
-![](PA1_template_files/figure-html/plot weekday weekend-1.png)<!-- -->
+![](PA1_template_files/figure-html/plot_weekday_weekend-1.png)<!-- -->
 
 
 
